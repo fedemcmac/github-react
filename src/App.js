@@ -1,26 +1,44 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from "react";
+import "./App.css";
+import Form from "./components/Form";
+import UsersContainer from "./components/UsersContainer";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+export default class App extends Component {
+  state = {
+    searchTerm: ""
+  };
+
+  handleChange = event => {
+    this.setState({
+      searchTerm: event.target.value,
+      users: []
+    });
+  };
+
+  handleSubmit = event => {
+    event.preventDefault();
+    fetch(
+      `https://api.github.com/search/users?q=${event.target.searchBar.value}`
+    )
+      .then(resp => resp.json())
+      .then(data => {this.setState({
+          users: data.items
+        });
+      });
+  };
+
+  render() {
+    return (
+      <div id="main">
+        <h2>GitHub Search</h2>
+
+        <Form
+          handleChange={this.handleChange}
+          searchTerm={this.state.searchTerm}
+          handleSubmit={this.handleSubmit}
+        />
+        <UsersContainer className="github-container" users={this.state.users} />
+      </div>
+    );
+  }
 }
-
-export default App;

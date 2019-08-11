@@ -1,68 +1,68 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# GitHub Search App
 
-## Available Scripts
+## GitHub API
 
-In the project directory, you can run:
+You will be using the GitHub API for this project. You can view documentation
+for this API [here](https://developer.github.com/v3/). This is an open API: no
+API key or authentication is required for the endpoints we will be using.
 
-### `npm start`
+Notice the GitHub API documentation includes the following excerpt. They require
+you to add a custom header to your requests.
 
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+<blockquote>
+By default, all requests to https://api.github.com receive the v3 version of the REST API. We encourage you to explicitly request this version via the Accept header.
+</blockquote>
 
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
+```text
+Accept: application/vnd.github.v3+json
+```
 
-### `npm test`
+#### [User Search Endpoint](https://developer.github.com/v3/search/#search-users)
 
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+You can search for users matching a certain name. For example, if we wanted to
+find all users name `octocat`, we would make a `GET` request to
+`https://api.github.com/search/users?q=octocat`. To view the response, you can
+copy and paste that URL into your browser.
 
-### `npm run build`
+This endpoint is rate limited. This means the API will stop returning data if
+you make more than
+[10 requests per minute](https://developer.github.com/v3/search/#rate-limit).
 
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
+#### [User Repos Endpoint](https://developer.github.com/v3/repos/#list-user-repositories)
 
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
+You can find all the public repositories for a user using this endpoint. For
+example if we wanted to find all the repositories for a user with GitHub
+username `octocat`, we would make a `GET` request to
+`https://api.github.com/users/octocat/repos`. To view the response, you can copy
+and paste that URL into your browser.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+This endpoint is rate limited. This endpoint will stop returning data if you
+make more than
+[60 requests in an hour](https://developer.github.com/v3/#rate-limiting).
 
-### `npm run eject`
+## Deliverables
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+You are going to build a JavaScript application which searches GitHub for users
+by name and displays the results on the screen. Clicking on a specific user will
+show all the repositories for that user.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+1. The `index.html` file has a form with a search input. When the form is
+   submitted, it should take the value of the input and search GitHub for user
+   matches using the [User Search Endpoint](#user-search-endpoint).
+2. Using the results of the search, display information about the users to the
+   page. (You might include showing their username, avatar and a link to their
+   profile.)
+3. Clicking on one of these users should send a request to the
+   [User Repos Endpoint](#user-repos-endpoint) and return data about all the
+   repositories for that user.
+4. Using the response from the Users Repos Endpoint, display all the
+   respositories for that user on the page.
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+## Bonus
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+- Toggle the search bar between searching for users by keyword and searching for
+  repos by keyword by adding an extra button. Hint: you can use the same search
+  bar for this, but you may need to create a variable which stores what the
+  current search type is (user or repo). The endpoint to search repositories by
+  keyword is
+  [here](https://developer.github.com/v3/search/#search-repositories).
